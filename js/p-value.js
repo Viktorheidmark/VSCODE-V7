@@ -58,3 +58,16 @@ addMdToPage(`
   Där X är den totala tiden för arbetstid + studietid (i timmar), och Y är CGPA.
   Denna formel visar hur arbetstid och studietid påverkar CGPA.
 `);
+
+
+
+
+
+
+
+
+addMdToPage(`
+*	Trots att man kanske skulle tro att mer tid på studier och arbete påverkar betyg, visar datan att det inte finns något tydligt linjärt samband här.
+*	Punkterna i diagrammet är väldigt vertikala och visar att CGPA är ganska likt oavsett hur mycket tid studenten lägger ner på arbete + studier.
+*	Den platta regressionslinjen (lutning ≈ 0) bekräftar detta.
+`)

@@ -13,6 +13,6 @@ createMenu('Psykisk-ohälsa-bland-studerande', [
   { name: 'depression', script: 'depression-man-women.js' },
   { name: 'familjehistorik', script: 'family-vs-depression.js' },
   { name: 'Normalfördelning och T-test', script: 'ex.js' },
-  { name: 'p-value', script: 'p-value.js' }
+  { name: 'Regressionsanalys', script: 'p-value.js' }
 
 ]);

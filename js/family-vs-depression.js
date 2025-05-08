@@ -83,3 +83,12 @@ if (diagramTyp === "Stapeldiagram") {
     }
   });
 }
+
+
+
+addMdToPage(`Dessa två diagram visar skillnaden mellan:
+* folk som har självmordtankar och har familjehistorik av det
+* folk som har självmordtankar och inte har familjehistorik av det
+* folk som inte har självmordtankar och har familjehistorik av det
+* folk som inte har självmordtankar och inte har familjehistorik av det
+`)

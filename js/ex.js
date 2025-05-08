@@ -7,32 +7,15 @@ const intervals = [[15,19],[20,24],[25,29],[30,34],[35,39],[40,44],[45,49],[50,5
 
 // Dropdown-meny för diagramtyp
 let chartType = addDropdown("Diagramtyp", [
-  "Scatterplot: Ålder vs Depression",
+  "Normalfördelning + T-test",
   "Histogram: Åldersfördelning",
-  "Andel depression per åldersgrupp",
-  "Normalfördelning + T-test"
+  "Andel depression per åldersgrupp"
 ]);
 
-// ➤ 1. SCATTERPLOT
-if (chartType === "Scatterplot: Ålder vs Depression") {
-  let scatterData = [["Ålder", "Har depression"]];
-  data.forEach(d => scatterData.push([Number(d.Age), Number(d.Depression)]));
 
-  drawGoogleChart({
-    type: "ScatterChart",
-    data: scatterData,
-    options: {
-      title: "Ålder vs Depression (1 = ja, 0 = nej)",
-      hAxis: { title: "Ålder" },
-      vAxis: { title: "Har depression" },
-      legend: "none",
-      colors: ["#1a73e8"]
-    }
-  });
-}
 
 // ➤ 2. HISTOGRAM: Åldersfördelning
-else if (chartType === "Histogram: Åldersfördelning") {
+if (chartType === "Histogram: Åldersfördelning") {
   let histogramData = [["Åldersintervall", "Antal personer", { role: "annotation" }]];
   let ageGroupCount = {};
   intervals.forEach(([start, end]) => ageGroupCount[`${start}-${end}`] = 0);
@@ -50,6 +33,8 @@ else if (chartType === "Histogram: Åldersfördelning") {
   Object.entries(ageGroupCount).forEach(([label, count]) => {
     histogramData.push([label, count, count.toString()]);
   });
+
+  addMdToPage("### Förklaring\nDetta histogram visar hur deltagarna är fördelade över olika åldersintervall.");
 
   drawGoogleChart({
     type: "ColumnChart",
@@ -90,6 +75,9 @@ else if (chartType === "Andel depression per åldersgrupp") {
   Object.entries(ageGroups).forEach(([group, values]) => {
     depressionGroupData.push([group, s.mean(values)]);
   });
+  
+  
+  addMdToPage("### Förklaring\nDetta didagram visar andel med depression per ålders intervall");
 
   drawGoogleChart({
     type: "ColumnChart",
