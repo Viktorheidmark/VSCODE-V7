@@ -1,5 +1,8 @@
 addMdToPage("# Jämförelse mellan män och kvinnor i undersökningen");
 
+addMdToPage(`Denna visar hur stor procentandel av undersökningen som är män och kvinnor och i dropdownen så kann man byta från en piechart till en columnchart
+  där man istället kan se totalt antal kvinnor och män`)
+
 // Hämta kön från databasen
 let students = await dbQuery("SELECT Gender FROM results");
 

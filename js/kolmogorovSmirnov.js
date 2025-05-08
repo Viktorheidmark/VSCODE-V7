@@ -1,4 +1,3 @@
-
 // Hämta data från databasen
 let students = await dbQuery("SELECT Academic_Pressure, CGPA FROM results");
 
@@ -20,13 +19,9 @@ addMdToPage(`
   * Om r ≈ **0** → inget samband  
 `);
 
-// Skapa data för scatterplot
-let scatterData = [['Akademisk stress', 'CGPA']];
-students.forEach(s => {
-  scatterData.push([s.Academic_Pressure, s.CGPA]);
-});
+addMdToPage(`Pearson test undersöker om en ökning i den ena variabeln hänger ihop med en ökning eller minskning i den andra och i så fall hur starkt det sambandet är.`)
 
-// Rita scatterplot med Google Charts
+// Skapa data för scatterplot
 drawGoogleChart({
   type: 'ScatterChart',
   data: makeChartFriendly(students, 'Academic_Pressure', 'CGPA'),
@@ -40,47 +35,22 @@ drawGoogleChart({
   }
 });
 
-// Hypotesprövning: T-test på CGPA beroende på hög/låg stress
+
+// Dela upp grupper baserat på medianvärde av stress
 let medianPressure = s.median(pressureLevels);
 let highStressCGPA = students.filter(s => s.Academic_Pressure >= medianPressure).map(s => s.CGPA);
 let lowStressCGPA = students.filter(s => s.Academic_Pressure < medianPressure).map(s => s.CGPA);
 
+// Hypotesprövning med t-test
+let pValue = s.tTestTwoSample(highStressCGPA, lowStressCGPA, { equalVariance: false });
 
 
 
-let highStressVector = new jerzy.Vector(highStressCGPA.slice(0,1000));
-let lowStressVector = new jerzy.Vector(lowStressCGPA.slice(0,1000));
-
-
-let pValue = new jerzy.Nonparametric.kolmogorovSmirnov(lowStressVector, highStressVector).p;
-
-
-
-let hypothesisText = `
-  ### Hypotesprövning: Påverkar hög stress CGPA?
-  * Vi jämför CGPA för studenter med hög och låg akademisk stress.
-  * **kolmogorovSmirnov-test: ${pValue.toFixed(3)}
-  * kolmogorovSmirnov-testet Används för att jämföra fördelningen av två dataset eller för att testa om ett dataset följer en viss fördelning.
-  * Skillnaden mellan p-test och kolmogorovSmirnov-test är att t-test används när du vill jämföra medelvärden mellan två grupper och kolmogorovSmirnov-test när du vill jämföra fördelningar**
-`;
-
-if (pValue < 0.05) {
-  hypothesisText += `
-  * **p < 0.05** → Det finns **statistiskt signifikant skillnad** mellan grupperna.
-  * Hög akademisk stress påverkar sannolikt CGPA.
-  `;
-} else {
-  hypothesisText += `
-  * **p > 0.05** → Det finns **ingen signifikant skillnad** mellan grupperna.
-  * Akademisk stress verkar **inte** påverka CGPA på ett tydligt sätt.
-  `;
-}
-
-addMdToPage(hypothesisText);
-
-// Visa det faktiska medelvärdet av CGPA
+// Visa medelvärden för båda grupper
 addMdToPage(`
   ### Medelvärde av CGPA
   * **Studenter med hög stress:** ${s.mean(highStressCGPA).toFixed(2)}
   * **Studenter med låg stress:** ${s.mean(lowStressCGPA).toFixed(2)}
 `);
+
+addMdToPage(`Detta visar att skillnaden mellan personer med högstress och personer med låg stress har inte står skillnad i CGPA`)
