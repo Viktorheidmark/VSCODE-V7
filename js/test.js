@@ -24,3 +24,4 @@ drawGoogleChart({
     vAxis: { title: 'Antal studenter' }
   }
 });
+addMdToPage(`I detta diagram så kan man se att ålder och antal studenter i skillnad mellan män och kvinnor`)
